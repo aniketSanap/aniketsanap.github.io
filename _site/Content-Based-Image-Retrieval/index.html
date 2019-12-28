@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Content Based Image Retrieval (CBIR) | Aniket Sanap</title>
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Content Based Image Retrieval (CBIR) | Aniket Sanap</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Content Based Image Retrieval (CBIR)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Retrieving similar images based on the content of a query image" />
+<meta property="og:description" content="Retrieving similar images based on the content of a query image" />
+<link rel="canonical" href="http://localhost:4000/Content-Based-Image-Retrieval/" />
+<meta property="og:url" content="http://localhost:4000/Content-Based-Image-Retrieval/" />
+<meta property="og:site_name" content="Aniket Sanap" />
+<meta property="og:image" content="http://localhost:4000/assets/images/posts/CBIR/cover_page.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-12-28T00:00:00+05:30" />
+<script type="application/ld+json">
+{"image":"http://localhost:4000/assets/images/posts/CBIR/cover_page.png","description":"Retrieving similar images based on the content of a query image","@type":"BlogPosting","headline":"Content Based Image Retrieval (CBIR)","dateModified":"2019-12-28T00:00:00+05:30","datePublished":"2019-12-28T00:00:00+05:30","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Content-Based-Image-Retrieval/"},"url":"http://localhost:4000/Content-Based-Image-Retrieval/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"}},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logo.png" alt="Aniket Sanap">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <!-- <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://bootstrapstarter.com/bootstrap-templates/template-mediumish-bootstrap-jekyll/"> Docs</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.wowthemes.net/themes/mediumish-wordpress/"><i class="fab fa-wordpress-simple"></i> WP Version</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.wowthemes.net/themes/mediumish-ghost/"><i class="fab fa-snapchat-ghost"></i> Ghost Version</a>
+                </li> -->
+                
+                <li class="nav-item">
+                    <a target="_blank" class="nav-link" href="https://github.com/aniketsanap"><i class="fab fa-github"></i></a>
+                </li>
+
+                <li class="nav-item">
+                    <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/aniket-sanap-940145185/"><i class="fab fa-linkedin"></i></a>
+                </li>
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">Aniket Sanap</h1>
+    <p class="lead">
+        Machine learning enthusiast.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Content Based Image Retrieval (CBIR)&url=http://localhost:4000/Content-Based-Image-Retrieval/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=http://localhost:4000/Content-Based-Image-Retrieval/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/Content-Based-Image-Retrieval/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Content Based Image Retrieval (CBIR)</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/posts/CBIR/cover_page.png" alt="Content Based Image Retrieval (CBIR)">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>Simple image classification was a challenge in computer vision not so long ago. All of this changed with the use of deep CNN architectures. Models like <a href="https://arxiv.org/abs/1512.03385">ResNet</a> that use skip connections, leading to much deeper architectures have consistently shown impressive results on the <a href="http://www.image-net.org/">ImageNet dataset</a>. Due to the success of these models in other tasks through transfer learning, it is apparent that they are able to extract relevant information from an RGB image. In this post, we will attempt to use a ResNet which has been trained on ImageNet to extract relevant features from our dataset and use these features to find similar images. This is broadly known as “Content Based Image Retrieval” where similar images are found based on semantic similarity. To replicate these results you will need <a href="https://pytorch.org">PyTorch</a>, <a href="https://github.com/facebookresearch/faiss">faiss</a>, <a href="https://numpy.org/">NumPy</a> and <a href="https://matplotlib.org/">matplotlib</a>. If you just want the code, I have it on my <a href="https://github.com/aniketSanap/CBIR/blob/master/CBIR.ipynb">github</a> or <a href="https://nbviewer.jupyter.org/github/aniketSanap/CBIR/blob/master/CBIR.ipynb">nbviewer</a>.</p>
+
+<p>For this project, we will use this <a href="https://drive.google.com/file/d/0B4KI-B-t3wTjbElMTS1DVldQUnc/view">Jewellery dataset</a>. This dataset contains four classes:</p>
+<ol>
+  <li>Bracelets (309 images).<br />
+<img src="/assets/images/posts/CBIR/bracelet_sample.jpg" alt="" /></li>
+  <li>Earrings (472 images).<br />
+<img src="/assets/images/posts/CBIR/earrings_sample.jpg" alt="" /></li>
+  <li>Necklaces (301 images).<br />
+<img src="/assets/images/posts/CBIR/necklace_sample.jpg" alt="" /></li>
+  <li>Rings (189 images).<br />
+<img src="/assets/images/posts/CBIR/ring_sample.jpg" alt="" /></li>
+</ol>
+
+<p>The images have the jewellery item in focus with a white background. This is a very clean dataset and should give us good results.</p>
+
+<h2 id="downloading-the-dataset">Downloading the dataset</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>wget <span class="nt">--no-check-certificate</span> <span class="s1">'https://docs.google.com/uc?export=download&amp;id=0B4KI-B-t3wTjbElMTS1DVldQUnc'</span> <span class="nt">-O</span> Jewellery.tar.gz
+<span class="nb">tar </span>xvf Jewellery.tar.gz
+<span class="nb">rm </span>Jewellery/<span class="k">*</span>.gz
+<span class="nb">rm </span>Jewellery/<span class="k">*</span>.zip
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>The above lines of code will download and extract the dataset using the terminal. They can be run in a jupyter notebook as well by inserting a ‘!’ before each line. After running the above code, you should have a directory called <code class="highlighter-rouge">Jewellery</code> which contains 4 different subdirectories with the names of each of the 4 different classes. Sound familiar? This is because this is exactly the format required by the <code class="highlighter-rouge">torchvision.datasets.ImageFolder</code> class! Unfortunately, as of the writing of this blog, this class does not return the name of the file.</p>
+
+<h2 id="building-a-custom-imagefolder-class">Building a custom ImageFolder class</h2>
+
+<p>We can make one very small modification to the builtin <code class="highlighter-rouge">ImageFolder</code> class so that it also returns the filenames. We require the file names to have a mapping of images with their extracted features.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ImageFolderWithPaths</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">):</span>
+    <span class="s">"""Custom dataset that includes image file paths. Extends
+    torchvision.datasets.ImageFolder
+    Source: https://gist.github.com/andrewjong/6b02ff237533b3b2c554701fb53d5c4d
+    """</span>
+    
+    <span class="c1"># override the __getitem__ method. this is the method that dataloader calls
+</span>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="c1"># this is what ImageFolder normally returns 
+</span>        <span class="n">original_tuple</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ImageFolderWithPaths</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="c1"># the image file path
+</span>        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># make a new tuple that includes original and the path
+</span>        <span class="n">tuple_with_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_tuple</span> <span class="o">+</span> <span class="p">(</span><span class="n">path</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">tuple_with_path</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>As you can see from the above code, just by adding a couple of lines to the <code class="highlighter-rouge">__getitem__</code> method, we are able to return the file names along with the image tensor and a label if necessary.</p>
+
+<h2 id="preprocessing-the-input-data">Preprocessing the input data</h2>
+
+<p>We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to <code class="highlighter-rouge">(224 x 224)</code> as that is the input size required by the ResNet. This can be achieved using a simple <code class="highlighter-rouge">torchvision.transforms.Resize()</code>. Hence this is what our preprocessing looks like: <br /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">transforms_</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
+<span class="p">])</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageFolderWithPaths</span><span class="p">(</span><span class="s">'Jewellery'</span><span class="p">,</span> <span class="n">transforms_</span><span class="p">)</span> <span class="c1"># our custom dataset
+</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="downloading-the-model">Downloading the model</h2>
+
+<p>We will be using the pretrained ResNet50 from <code class="highlighter-rouge">torchvision.models</code>. You can try using the same logic on multiple different CNN architectures but we will be using ResNet50 for this blog.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">DEVICE</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>ResNet is by default used for classification. We don’t want the output from the output layer of the ResNet. We will consider our feature vector to be the output of the last pooling layer. To extract the output from this pooling layer, we will use a small function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">pooling_output</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">model</span>
+    <span class="k">for</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">_modules</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">layer_name</span> <span class="o">==</span> <span class="s">'avgpool'</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Here <code class="highlighter-rouge">avgpool</code> is the name of the last pooling layer in the structure of our model.</p>
+
+<h2 id="creating-feature-vectors">Creating feature vectors</h2>
+
+<p>We now have everything we require to create our feature vectors. This is a very straightforward process. Make sure you put the model in <code class="highlighter-rouge">eval()</code> mode before running this!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c1"># iterate over data
+</span><span class="n">image_paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">descriptors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">paths</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+        <span class="n">descriptors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="n">image_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Once this code finishes execution, congratulations! You have now built feature vectors from your dataset. But how do you find similar images from these feature vectors? This is where <code class="highlighter-rouge">faiss</code> comes in. The description of faiss from its github is “A library for efficient similarity search and clustering of dense vectors”. This is a library created by Facebook which is super fast at similarity search, which is exactly what we want.</p>
+
+<h2 id="installing-faiss">Installing faiss</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>wget https://anaconda.org/pytorch/faiss-gpu/1.2.1/download/linux-64/faiss-gpu-1.2.1-py36_cuda9.0.176_1.tar.bz2
+<span class="nb">tar </span>xvjf faiss-gpu-1.2.1-py36_cuda9.0.176_1.tar.bz2
+<span class="nb">cp</span> <span class="nt">-r</span> lib/python3.6/site-packages/<span class="k">*</span> /usr/local/lib/python3.6/dist-packages/
+pip <span class="nb">install </span>mkl
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>You may want to replace my version with the latest one. But I cannot promise that it will work the same, so in case of any errors, try installing the same version of faiss that I have.</p>
+
+<h2 id="creating-a-faiss-index">Creating a faiss index</h2>
+
+<p>The way that we will use faiss is that first we will create a faiss index using our precalculated feature vectors. Then at runtime we will get another image. We will then run this image through our model and calculate its feature vector as well. We will then query faiss with the new feature vector to find similar vectors. It should be clearer with code.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">faiss</span>
+
+
+<span class="n">index</span> <span class="o">=</span> <span class="n">faiss</span><span class="o">.</span><span class="n">IndexFlatL2</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+<span class="n">descriptors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
+<span class="n">index</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="calculating-the-feature-vector-of-a-query-image-and-searching-using-faiss">Calculating the feature vector of a query image and searching using faiss</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">query_image</span> <span class="o">=</span> <span class="s">'Jewellery/bracelet/bracelet_048.jpg'</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">query_image</span><span class="p">)</span>
+
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">transforms_</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">query_descriptors</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">distance</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query_descriptors</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2048</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Using the above piece of code, I got the following results:<br /></p>
+<ul>
+  <li>
+    <p>Query image:<br />
+<img src="/assets/images/posts/CBIR/query_image.jpg" alt="Query image" /></p>
+  </li>
+  <li>
+    <p>Top 9 results:<br />
+<img src="/assets/images/posts/CBIR/cover_page.png" alt="Results" /></p>
+  </li>
+</ul>
+
+<p>The results are not that bad! The first image is just the query image as naturally it will have the most similar vector. The rest of the images are what I would say pretty similar to the query image. This is especially apparent because of the circular piece of jewellery at the center of the bracelet. But I would say for a model not trained at all on this specific dataset, the results are acceptable. You can try training the model on the actual dataset, augmenting the images, adding a bit of noise to make the model a bit more general or any other technique you want to try and improve the performance of the model.</p>
+
+<p>The complete code for this project is available in the form of a jupyter notebook on my <a href="https://github.com/aniketSanap/CBIR/blob/master/CBIR.ipynb">github</a> or on <a href="https://nbviewer.jupyter.org/github/aniketSanap/CBIR/blob/master/CBIR.ipynb">nbviewer</a>. You can leave any questions, comments or concerns in the comment section below. I hope this post was useful :)</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2019-12-28">28 Dec 2019</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#CNN">CNN</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Faiss">Faiss</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#PyTorch">PyTorch</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Python">Python</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Vision">Vision</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="//Neural-Style-Transfer/">Content Based Image Retrieval (CBIR) &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+    <div class="container">
+        <div id="comments" class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'anikets-portfolio'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+            </div>
+        </div>
+    </div>
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+<!-- Bottom Alert Bar
+================================================== -->
+<!-- <div class="alertbar">
+	<div class="container text-center">
+		<span><img src="/assets/images/logo.png" alt="Aniket Sanap"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group">
+            <input type="email" placeholder="Email" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+	</div>
+</div> -->
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<!-- <div class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Vision">Vision (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#CNN">CNN (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PyTorch">PyTorch (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Python">Python (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Faiss">Faiss (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div> -->
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 text-center text-lg-center">
+                Copyright © 2019 Aniket Sanap 
+            </div>
+            <!-- <div class="col-md-6 col-sm-6 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div> -->
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//anikets-portfolio.disqus.com/count.js"></script>
+
+
+</body>
+</html>
