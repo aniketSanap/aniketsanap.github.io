@@ -425,7 +425,14 @@ Creating the one hot vector of a character will look something like this:</p>
 <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="s">'E'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'W'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">'R'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'D'</span><span class="p">]</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>This is because our language model always tries to predict the next character in the sequence given the previous characters. 
-To achieve this input, we will take 100 characters from our corpus. The first 99 of which will become our x and the last 99 of which will become our y.</p>
+This is achieved by taking 100 characters from our corpus. The first 99 of which will become our x and the last 99 of which will become our y.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>This is why we need to have <code class="highlighter-rouge">sequence_length - len(sequence) - 1</code> in our one hot encoder. Alternatively, we can just index 101 characters at a time.</p>
 
 <h2 id="building-the-model">Building the model</h2>
 

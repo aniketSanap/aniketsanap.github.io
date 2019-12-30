@@ -6,7 +6,7 @@ categories: [ NLP, LSMT, PyTorch, Python ]
 image: assets/images/posts/CharacterLevelLanguageModel/cover_page.png
 description: "Predicting the next character in a sequence"
 featured: true
-# hidden: true
+hidden: true
 date: 2019-12-28
 image_dir: assets/images/posts/CharacterLevelLanguageModel
 ---
