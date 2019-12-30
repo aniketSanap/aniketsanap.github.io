@@ -142,7 +142,13 @@ input_ = ['H', 'E', 'L', 'L', 'O', ' ', 'W', 'O', 'R', 'L']
 output = ['E', 'L', 'L', 'O', ' ', 'W', 'O', 'R', 'L', 'D']
 ```
 This is because our language model always tries to predict the next character in the sequence given the previous characters. 
-To achieve this input, we will take 100 characters from our corpus. The first 99 of which will become our x and the last 99 of which will become our y.
+This is achieved by taking 100 characters from our corpus. The first 99 of which will become our x and the last 99 of which will become our y.
+
+```py
+x = sequence[:-1]
+y = sequence[1:]
+```
+This is why we need to have `sequence_length - len(sequence) - 1` in our one hot encoder. Alternatively, we can just index 101 characters at a time.
 
 ## Building the model
 
