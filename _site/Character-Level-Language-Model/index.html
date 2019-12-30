@@ -225,21 +225,532 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <!DOCTYPE html>
-<html>
-<head>
-  <script type='text/javascript'>
-    // Simulate a mouse click:
-    window.location.href = "http://www.w3schools.com";
+                <p>Computer vision had its big boom at the start of this decade with the ImageNet Large Scale Visual Recognition Challenge. Deep CNN architectures were hands down the best approach to tackle vision problems. With the use of transfer learning, these models could be used for a variety of different tasks and applications which led to rapid progress in the field of computer vision. Transfer learning is commonly used in Natural Language Processing through building a language model first and then modifying it to suite our use case. This makes sense because human language is very complex. There is no one correct approach to writing or speaking anything. When we directly train our model on a language specific task, our model has no prior information about the complex structure or any of the nuances of human language. We cannot expect a model which has just been introduced to english to perform well on any language specific task directly without understanding the language first. Hence, we train a language model on a large dataset (like wikipedia) and then use this model which has an understanding of the language on our task.</p>
 
-    // Simulate an HTTP redirect:
-    window.location.replace("https://github.com/aniketSanap/CharacterLevelLanguageModel/blob/master/character_lstm.ipynb");
-  </script>
-</head>
-<body>
-  
-</body>
-</html>                                                                                                                                                                  
+<p>A language model is a probability distribution over a sequence of tokens. In this post we will built a simple character level language model. Hence, the tokens for our model will be characters. Every language model needs a vocabulary. The vocabulary consists of all the tokens which are part of your input and which should be predicted by your output. For a character level language model, the vocabulary consists of every distinct character in your dataset. If you just want the code then you can find it on my <a href="https://github.com/aniketSanap/CharacterLevelLanguageModel">github</a>. Well then, lets start programming!</p>
+
+<h2 id="the-corpus">The corpus</h2>
+
+<p>We obviously need a dataset. You can use any large corpus of data to train this model. As this is just a simple character based model, we will be using the text from <a href="https://norvig.com/big.txt">this site</a> instead of using something like wikipedia. The text looks something like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>ADVENTURE  I.  A SCANDAL IN BOHEMIA
+
+I.
+
+
+To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. 
+...
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>We will start by reading the file and splitting it into a training set and a small validation set. We will only be using the validation set to keep an eye on it’s loss and making sure that the model does not overfit to the training set.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'file.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">text_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">split_ratio</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="n">train_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">split_ratio</span> <span class="o">*</span> <span class="n">text_size</span><span class="p">)]</span>
+<span class="n">test_text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">split_ratio</span> <span class="o">*</span> <span class="n">text_size</span><span class="p">):]</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="building-the-vocabulary">Building the vocabulary</h3>
+
+<p>Creating the vocabulary is one of the first steps in preprocessing the text before passing it to your model. For our model, it contains a mapping of all the possible characters with a certain unique integer. The string to int mapping can be a dictionary with the characters as keys and the corresponding indices as values. The integer to character mapping can be a simple list where the index is implied. For a general range of characters you can use from <code class="highlighter-rouge">string import printable</code>. <code class="highlighter-rouge">printable</code> contains every printable character on your screen and your text probably won’t contain any additional characters.
+In code it looks like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">itos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">printable</span><span class="p">)</span>
+<span class="n">stoi</span> <span class="o">=</span> <span class="p">{</span><span class="n">char</span><span class="p">:</span><span class="n">int_</span> <span class="k">for</span> <span class="n">int_</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">itos</span><span class="p">)}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="preprocessing">Preprocessing</h2>
+
+<h4 id="one-hot-encoding">One hot encoding</h4>
+
+<p>Generally text based tasks need a lot of preprocessing as you can’t pass text directly to your model. In an attempt to keep this model simple, we will use a one hot encoded vector for our input over using word embeddings. The size of our one hot encoded vector will be the size of our vocabulary. For those unaware, a one hot encoded vector is simply a zero vector with a single 1 at the index of our character. We will create a separate one hot vector for every single character as input. 
+Creating the one hot vector of a character will look something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c1"># Finding the index of the input char
+</span><span class="n">index</span> <span class="o">=</span> <span class="n">stoi</span><span class="p">[</span><span class="n">char</span><span class="p">]</span>
+
+<span class="c1"># Defining the size of the vector
+</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">itos</span><span class="p">)</span>
+
+<span class="c1"># Creating the actual encoded vector
+</span><span class="n">vector</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Here is our one hot encoder function which will work on an entire string</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">one_hot_encoder</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">stoi</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stoi</span><span class="p">)</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">int_</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">temp</span><span class="p">[</span><span class="n">int_</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>You may have noticed that we used <code class="highlighter-rouge">sequence_length - len(sequence) - 1</code> for our loop instead of just <code class="highlighter-rouge">sequence_length - len(sequence)</code>. This will be explained shortly.</p>
+
+<h4 id="splitting-the-data-into-sequences">Splitting the data into sequences</h4>
+
+<p>As our dataset is very large, we will split it into sequences of length <code class="highlighter-rouge">sequence_length = 100</code> each. This will allow us to process multiple sequences in parallel leading to faster training. We will do this splitting as well as the one hot encoding during run time using PyTorch’s datasets and dataloaders. A summary of what we have done so far can be observed through our dataset class.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">LanguageModelDatset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">sequence_length</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">itos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">printable</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stoi</span> <span class="o">=</span> <span class="p">{</span><span class="n">char</span><span class="p">:</span><span class="n">int_</span> <span class="k">for</span> <span class="n">int_</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itos</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">one_hot_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stoi</span><span class="p">)</span>
+
+        <span class="n">encoded</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">int_</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">int_</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_size</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span>
+    
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="n">idx</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span><span class="p">:(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span><span class="p">]</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>If you don’t know what PyTorch datasets and dataloaders are, I highly recommend you check them out. They are a great way of abstracting your data and PyTorch takes care of a lot of stuff (like parallel loading) under the hood. All you need to know for this post is that you have to define your own <code class="highlighter-rouge">__len__()</code> function to return the length of your dataset and your own <code class="highlighter-rouge">__getitem__()</code> function which takes an index parameter to return the i<sup>th</sup> value of your dataset. This allows you to index your dataset just like you would a list. In our <code class="highlighter-rouge">__getitem__()</code> function, we have to define our input and label (x and y). Our input is going to be a sequence of characters. The labels for a language model is the same sequence but offset by one word. This is better understood using code.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">input_</span> <span class="o">=</span> <span class="p">[</span><span class="s">'H'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'W'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">'R'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="s">'E'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'W'</span><span class="p">,</span> <span class="s">'O'</span><span class="p">,</span> <span class="s">'R'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'D'</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>This is because our language model always tries to predict the next character in the sequence given the previous characters. 
+To achieve this input, we will take 100 characters from our corpus. The first 99 of which will become our x and the last 99 of which will become our y.</p>
+
+<h2 id="building-the-model">Building the model</h2>
+
+<p>We will be using an LSTM based architecture for this model. Our input size will be equal to the size of our one hot encoded vector. This is because our model will process one character at a time for each batch. It will do this sequentially for our entire sequence. The size of our output layer will also be equal to the size of our one hot vector. This is because the output tells us which character should be next. So the size has to be equal to the total number of characters in our vocabulary, which is of course, the size of our one hot vector.</p>
+
+<p>Here is our model architecture in code:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">CharLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">n_hidden_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legal_chars</span> <span class="o">=</span> <span class="n">printable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden_layers</span> <span class="o">=</span> <span class="n">n_hidden_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="n">n_hidden_layers</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_chars</span><span class="p">),</span> 
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span> 
+            <span class="n">num_layers</span><span class="o">=</span><span class="n">n_hidden_layers</span><span class="p">,</span> 
+            <span class="n">dropout</span><span class="o">=</span><span class="n">dropout_prob</span><span class="p">,</span> 
+            <span class="n">batch_first</span><span class="o">=</span><span class="bp">True</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_chars</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">lstm_output</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">))</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_layer</span><span class="p">(</span><span class="n">lstm_output</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="c1"># hidden state and cell state
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> 
+                <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>A couple of things to note while working with RNNs and their variants:</p>
+<ol>
+  <li><code class="highlighter-rouge">init_hidden()</code>: This is a method which initializes the hidden and cell state for our LSTM. It will initially be set to zero and will change with every sequence.</li>
+  <li>As we are keeping the same hidden state throughout, it is necessary to detach it from our graph to prevent BPTT (Backpropagation Through Time) over our entire dataset.</li>
+</ol>
+
+<h2 id="its-time-to-train">It’s time to train!</h2>
+
+<p>We will be using the standard pytorch training loop with some modifications.</p>
+<ol>
+  <li><code class="highlighter-rouge">nn.utils.clip_grad_norm_(model.parameters(), clip)</code>: This is used to prevent the exploding gradient problem in RNNs.</li>
+  <li>Initializing the hiddens state at the start of every epoch.</li>
+  <li>Ignoring the last batch of every epoch if its size is not equal to our <code class="highlighter-rouge">batch_size</code>. This is to prevent issues with hidden state size.</li>
+</ol>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></td><td class="rouge-code"><pre><span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">print_every</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">clip</span><span class="p">)</span>
+        <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">%</span> <span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}/{}..."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">),</span>
+                  <span class="s">"Step: {}..."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">counter</span><span class="p">),</span>
+                  <span class="s">"Loss: {:.4f}..."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+            
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">test_dataloader</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+            <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'='</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">f</span><span class="s">'</span><span class="se">\n</span><span class="s">Test loss: {test_loss/total}</span><span class="se">\n</span><span class="s">'</span> <span class="o">+</span> <span class="s">'='</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_loss</span> <span class="o">&lt;</span> <span class="n">max_test_loss</span><span class="p">:</span>
+            <span class="n">max_test_loss</span> <span class="o">=</span> <span class="n">test_loss</span>
+            <span class="n">save_weights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_path</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>I trained this model for 30 epochs while making sure that the validation loss was still decreasing.</p>
+
+<h2 id="testing-our-model">Testing our model</h2>
+
+<p>To test our model, we will be writing 2 functions. The first one called <code class="highlighter-rouge">predict</code> will take a character and hidden state as input and return the next character and the next hidden state. The second function called <code class="highlighter-rouge">generate_chars</code> will take input a sequence of characters using which our model will start its story. This function will call predict <code class="highlighter-rouge">n_chars</code> number of times (<code class="highlighter-rouge">n_chars</code> will be a parameter which defines the length of the output sequence).</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">predict_next_char</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">test_dataset</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">char_vector</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">([</span><span class="n">char</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># shape: (batch_size, sequence_length, vector_size)
+</span>    <span class="n">char_vector</span> <span class="o">=</span> <span class="n">char_vector</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">char_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">char_vector</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Sampling from a distribution to add randomness
+</span>        <span class="n">dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">h</span>
+
+<span class="k">def</span> <span class="nf">generate_chars</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_chars</span><span class="p">,</span> <span class="n">prime</span><span class="o">=</span><span class="s">'The'</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">test_dataset</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+
+    <span class="c1"># Batch size: 1
+</span>    <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prime</span><span class="p">]:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">predict_next_char</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="n">chars</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_chars</span><span class="p">):</span>
+        <span class="n">char</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">predict_next_char</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">chars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prime</span> <span class="o">+</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Notice that in the <code class="highlighter-rouge">predict</code> function, we are not simply taking softmax and using the character with the highest probability as the output. This is to ensure non deterministic behaviour of our model. Otherwise it is possible that our model will predict the same text every single time given the same input. To avoid this, we add a bit of randomness to the predictions by using a categorical distribution from <code class="highlighter-rouge">torch.distributions.Categorical</code>. We map our output probabilities and sample from this distribution hence making it slightly random. Another important point is that we have to call <code class="highlighter-rouge">model.eval()</code> before making any predictions. This is to ensure that factors like dropout are not active during inference.</p>
+
+<p>Here is what the output looks like:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre>Thenoud. That may advents and then were what he had realized him to with it his word really he had hoped to gravely.
+
+The Girls were to
+directly down as Moscow "and many name in Frenchsiatures: still tried
+to go
+to the man and took peasants with recembling officer replied.
+
+Without expectated her.
+
+"To last after it of them; if he asked Doroth, do what a words she wrote out. Might Russia, and how he knew us to the princess. See Pierre close, I. When she saw the God, as he had khow. Napoleon's beauty-embings
+he
+opposite if and down to cur, beamed his spoze, remained gazed at his long dipfushius fur rash,
+went in land. The
+staff so endarked her stage.
+
+There, evidently sat people, paper the Emperor respect and had a quarter appear mighter
+and huers from the twill freed large. Count Molming which was loved to very offended kind collar out, and herself that like Borodino unattended to Prince Vasili. "I must be done not become meeting his will, so. Ing a restraint from her resist up to a swerf and dispensation, Natasha, blostest gossip. These
+everywhere he frew four same to their faces which drawn out himself, but Pierre never just always like her and heard I may cause the officers for that-sobling have meant not la in her producefre princess.
+
+On the Sonya, was understood here they
+had thought the princess, the yellow an one had understanding a moment--motionless a thousands
+of a valand quarters. After the rubber word of how one interest less pulled on the bullet in the family.
+
+The Man.
+Petya spoke Pierre
+in his hearing an angry plundings. The hands of Pierre's resoluting that
+who would have so not having
+offended, sides to
+the men meeting Miss Rostov, had a suture was employed at the brought, and that reformed remorsing and provising as particularly finely and funday the weep of side, while he was the entristent fiolly in a schabaces were ridicules surely-electations to the clowar!" he said that had been
+taken in
+the
+Russian French hamp lagerral Rather--what was not repu
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>These are the first 2000 characters after training for 40 epochs. It is actually quite fun to see the model progress. It starts out printing random characters. Slowly but surely it starts to understand the structure of the corpus. Eventually you see it reduce the number of spelling mistakes. While the text doesn’t make any sense, let me put this in context. This is a model which has no understanding of the concept of language, let alone the english language. We have given it a pretty small corpus of data (with a tiny sequence length of 100) and all it has learnt is to predict the next character. I have been studying english for my entire life and I still make spelling msitakes every single day :p. I have trained this very simple and small model architecture for less than an hour and I must say, I’m pretty impressed with the results.</p>
+
+<p>If you want a link to the full code, you can find it on my <a href="https://github.com/aniketSanap/CharacterLevelLanguageModel">github</a>. If you have any doubts, concerns or suggestions, feel free to leave a comment. Have a nice day!</p>
 
             </div>
 
@@ -288,14 +799,14 @@
             </div>
             <!-- End Tags -->
 
-            <!-- Prev/Next -->
+            <!-- Prev/Next
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
             <a class="prev d-block col-md-6" href="//Neural-Style-Transfer/"> &laquo; Neural Style Transfer</a>
             
             
             <div class="clearfix"></div>
-            </div>
+            </div> -->
             <!-- End Categories -->
 
         </div>
