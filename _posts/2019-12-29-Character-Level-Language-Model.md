@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Character level language model using LSTMs"
-categories: [ NLP, LSMT, PyTorch, Python ]
+categories: [ NLP, LSTM, PyTorch, Python ]
 # tags: []
 image: assets/images/posts/CharacterLevelLanguageModel/cover_page.png
 description: "Predicting the next character in a sequence"
