@@ -43,6 +43,6 @@
 <loc>http://localhost:4000/category/nlp/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/category/lsmt/</loc>
+<loc>http://localhost:4000/category/lstm/</loc>
 </url>
 </urlset>
