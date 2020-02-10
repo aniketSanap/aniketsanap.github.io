@@ -66,11 +66,13 @@ As you can see from the above code, just by adding a couple of lines to the `__g
 
 ## Preprocessing the input data
 
-We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to `(224 x 224)` as that is the input size required by the ResNet. This can be achieved using a simple `torchvision.transforms.Resize()`. Hence this is what our preprocessing looks like: <br>
+We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to `(224 x 224)` as that is the input size required by the ResNet. This can be achieved using a simple `torchvision.transforms.Resize()`. We also have to normalize our input tensor with the same parameters as used to train the network on imagenet. This is what our preprocessing looks like: <br>
 ```python
 transforms_ = transforms.Compose([
     transforms.Resize(size=[224, 224], interpolation=2),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225])
 ])
 
 dataset = ImageFolderWithPaths('Jewellery', transforms_) # our custom dataset
