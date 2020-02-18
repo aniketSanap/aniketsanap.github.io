@@ -746,7 +746,7 @@ Using both LSTMs and GRUs in pytorch is very easy using `nn.LSTM` and `nn.GRU`. 
 
 ### Additional material
 
-1. I have written another blog to build on your understanding using a project! Check out [character based language model](https://aniketsanap.github.io/Character-Level-Language-Model/) using RNNs.
+1. I have written another blog to build on your understanding using a project! Check out [character based language model]({{ site.baseurl }}/Character-Level-Language-Model/) using RNNs.
 2. Chris Olah's [post](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) on RNNs and LSTMs.
 3. Andrej Karpathy's [post](http://karpathy.github.io/2015/05/21/rnn-effectiveness/) on building an RNN from scratch.
 4. A great [lecture](https://www.youtube.com/watch?v=l1rlFh0PmZw&list=PLtmWHNX-gukKocXQOkQjuVxglSDYWsSh9&index=9) by Rachel Thomas as part of "A Code-First Introduction to Natural Language Processing".
