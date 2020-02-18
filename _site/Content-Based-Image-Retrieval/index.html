@@ -299,7 +299,7 @@
 
 <h2 id="preprocessing-the-input-data">Preprocessing the input data</h2>
 
-<p>We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to <code class="highlighter-rouge">(224 x 224)</code> as that is the input size required by the ResNet. This can be achieved using a simple <code class="highlighter-rouge">torchvision.transforms.Resize()</code>. Hence this is what our preprocessing looks like: <br /></p>
+<p>We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to <code class="highlighter-rouge">(224 x 224)</code> as that is the input size required by the ResNet. This can be achieved using a simple <code class="highlighter-rouge">torchvision.transforms.Resize()</code>. We also have to normalize our input tensor with the same parameters as used to train the network on imagenet. This is what our preprocessing looks like: <br /></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
@@ -307,9 +307,13 @@
 5
 6
 7
+8
+9
 </pre></td><td class="rouge-code"><pre><span class="n">transforms_</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                        <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
 <span class="p">])</span>
 
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageFolderWithPaths</span><span class="p">(</span><span class="s">'Jewellery'</span><span class="p">,</span> <span class="n">transforms_</span><span class="p">)</span> <span class="c1"># our custom dataset
@@ -584,15 +588,17 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#CNN">CNN (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#PyTorch">PyTorch (3)</a>
+                    <a class="mt-1 mb-1" href="/categories#PyTorch">PyTorch (4)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Python">Python (3)</a>
+                    <a class="mt-1 mb-1" href="/categories#Python">Python (4)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Faiss">Faiss (1)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#NLP">NLP (1)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#LSTM">LSTM (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#RNNs">RNNs (1)</a>
                 
             
             

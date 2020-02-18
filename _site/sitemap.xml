@@ -13,6 +13,10 @@
 <lastmod>2019-12-28T00:00:00+05:30</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/Understanding-RNNs/</loc>
+<lastmod>2020-02-18T00:00:00+05:30</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about</loc>
 </url>
 <url>
@@ -44,5 +48,8 @@
 </url>
 <url>
 <loc>http://localhost:4000/category/lstm/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/category/rnns/</loc>
 </url>
 </urlset>
