@@ -8,7 +8,7 @@ var documents = [{
     "id": 1,
     "url": "http://localhost:4000/about",
     "title": "About me",
-    "body": "Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I am currently working as a machine learning engineer at AI Adventures and have been working there since June 2019. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I will be continuing my education in the form of a Master's degree from fall 2020. When I am not on my laptop, you'll probably find me trying to play the guitar. Get in touch!You can contact me on linkedin "
+    "body": "Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I worked as a machine learning engineer at AI Adventures till March 2020. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I am currently looking for jobs and internship opportunities in this domain. Get in touch!You can contact me on linkedin "
     }, {
     "id": 2,
     "url": "http://localhost:4000/categories",
