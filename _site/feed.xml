@@ -5,8 +5,8 @@
     <description>Machine learning enthusiast.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 26 May 2020 00:36:21 +0530</pubDate>
-    <lastBuildDate>Tue, 26 May 2020 00:36:21 +0530</lastBuildDate>
+    <pubDate>Fri, 29 May 2020 20:55:02 +0530</pubDate>
+    <lastBuildDate>Fri, 29 May 2020 20:55:02 +0530</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -1629,7 +1629,7 @@ Russian French hamp lagerral Rather--what was not repu
     
       <item>
         <title>Content Based Image Retrieval (CBIR)</title>
-        <description>&lt;p&gt;Simple image classification was a challenge in computer vision not so long ago. All of this changed with the use of deep CNN architectures. Models like &lt;a href=&quot;https://arxiv.org/abs/1512.03385&quot;&gt;ResNet&lt;/a&gt; that use skip connections, leading to much deeper architectures have consistently shown impressive results on the &lt;a href=&quot;http://www.image-net.org/&quot;&gt;ImageNet dataset&lt;/a&gt;. Due to the success of these models in other tasks through transfer learning, it is apparent that they are able to extract relevant information from an RGB image. In this post, we will attempt to use a ResNet which has been trained on ImageNet to extract relevant features from our dataset and use these features to find similar images. This is broadly known as “Content Based Image Retrieval” where similar images are found based on semantic similarity. To replicate these results you will need &lt;a href=&quot;https://pytorch.org&quot;&gt;PyTorch&lt;/a&gt;, &lt;a href=&quot;https://github.com/facebookresearch/faiss&quot;&gt;faiss&lt;/a&gt;, &lt;a href=&quot;https://numpy.org/&quot;&gt;NumPy&lt;/a&gt; and &lt;a href=&quot;https://matplotlib.org/&quot;&gt;matplotlib&lt;/a&gt;. If you just want the code, I have it on my &lt;a href=&quot;https://github.com/aniketSanap/CBIR/blob/master/CBIR.ipynb&quot;&gt;github&lt;/a&gt; or &lt;a href=&quot;https://nbviewer.jupyter.org/github/aniketSanap/CBIR/blob/master/CBIR.ipynb&quot;&gt;nbviewer&lt;/a&gt;.&lt;/p&gt;
+        <description>&lt;p&gt;Simple image classification was a challenge in computer vision not so long ago. All of this changed with the use of deep CNN architectures. Models like &lt;a href=&quot;https://arxiv.org/abs/1512.03385&quot;&gt;ResNet&lt;/a&gt; that use skip connections, leading to much deeper architectures have consistently shown impressive results on the &lt;a href=&quot;http://www.image-net.org/&quot;&gt;ImageNet dataset&lt;/a&gt;. Due to the success of these models in other tasks through transfer learning, it is apparent that they are able to extract relevant information from an RGB image. In this post, we will attempt to use a ResNet which has been trained on ImageNet to extract relevant features from our dataset and use these features to find similar images. This is broadly known as “Content Based Image Retrieval” where similar images are found based on semantic similarity. To replicate these results you will need &lt;a href=&quot;https://pytorch.org&quot;&gt;PyTorch&lt;/a&gt;, &lt;a href=&quot;https://github.com/facebookresearch/faiss&quot;&gt;faiss&lt;/a&gt;, &lt;a href=&quot;https://numpy.org/&quot;&gt;NumPy&lt;/a&gt; and &lt;a href=&quot;https://matplotlib.org/&quot;&gt;matplotlib&lt;/a&gt;. If you just want the code, I have it on my &lt;a href=&quot;https://github.com/aniketSanap/CBIR/blob/master/CBIR.ipynb&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;For this project, we will use this &lt;a href=&quot;https://drive.google.com/file/d/0B4KI-B-t3wTjbElMTS1DVldQUnc/view&quot;&gt;Jewellery dataset&lt;/a&gt;. This dataset contains four classes:&lt;/p&gt;
 &lt;ol&gt;
