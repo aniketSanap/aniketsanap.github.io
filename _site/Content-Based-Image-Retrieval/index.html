@@ -8,9 +8,9 @@
 
 <title>Content Based Image Retrieval (CBIR) | Aniket Sanap</title>
 
-<!-- Begin Jekyll SEO tag v2.5.0 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Content Based Image Retrieval (CBIR) | Aniket Sanap</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Content Based Image Retrieval (CBIR)" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Retrieving similar images based on the content of a query image" />
@@ -20,9 +20,12 @@
 <meta property="og:site_name" content="Aniket Sanap" />
 <meta property="og:image" content="http://localhost:4000/assets/images/posts/CBIR/cover_page.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-12-28T00:00:00+05:30" />
+<meta property="article:published_time" content="2019-12-28T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/images/posts/CBIR/cover_page.png" />
+<meta property="twitter:title" content="Content Based Image Retrieval (CBIR)" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Content-Based-Image-Retrieval/"},"@type":"BlogPosting","description":"Retrieving similar images based on the content of a query image","url":"http://localhost:4000/Content-Based-Image-Retrieval/","headline":"Content Based Image Retrieval (CBIR)","dateModified":"2019-12-28T00:00:00+05:30","datePublished":"2019-12-28T00:00:00+05:30","image":"http://localhost:4000/assets/images/posts/CBIR/cover_page.png","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"}},"@context":"http://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Content-Based-Image-Retrieval/"},"description":"Retrieving similar images based on the content of a query image","url":"http://localhost:4000/Content-Based-Image-Retrieval/","@type":"BlogPosting","image":"http://localhost:4000/assets/images/posts/CBIR/cover_page.png","headline":"Content Based Image Retrieval (CBIR)","dateModified":"2019-12-28T00:00:00-05:00","datePublished":"2019-12-28T00:00:00-05:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"}},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -267,11 +270,11 @@
 <span class="nb">rm </span>Jewellery/<span class="k">*</span>.zip
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>The above lines of code will download and extract the dataset using the terminal. They can be run in a jupyter notebook as well by inserting a ‘!’ before each line. After running the above code, you should have a directory called <code class="highlighter-rouge">Jewellery</code> which contains 4 different subdirectories with the names of each of the 4 different classes. Sound familiar? This is because this is exactly the format required by the <code class="highlighter-rouge">torchvision.datasets.ImageFolder</code> class! Unfortunately, as of the writing of this blog, this class does not return the name of the file.</p>
+<p>The above lines of code will download and extract the dataset using the terminal. They can be run in a jupyter notebook as well by inserting a ‘!’ before each line. After running the above code, you should have a directory called <code class="language-plaintext highlighter-rouge">Jewellery</code> which contains 4 different subdirectories with the names of each of the 4 different classes. Sound familiar? This is because this is exactly the format required by the <code class="language-plaintext highlighter-rouge">torchvision.datasets.ImageFolder</code> class! Unfortunately, as of the writing of this blog, this class does not return the name of the file.</p>
 
 <h2 id="building-a-custom-imagefolder-class">Building a custom ImageFolder class</h2>
 
-<p>We can make one very small modification to the builtin <code class="highlighter-rouge">ImageFolder</code> class so that it also returns the filenames. We require the file names to have a mapping of images with their extracted features.</p>
+<p>We can make one very small modification to the builtin <code class="language-plaintext highlighter-rouge">ImageFolder</code> class so that it also returns the filenames. We require the file names to have a mapping of images with their extracted features.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -288,7 +291,7 @@
 13
 14
 15
-</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ImageFolderWithPaths</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">):</span>
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ImageFolderWithPaths</span><span class="p">(</span><span class="n">datasets</span><span class="p">.</span><span class="n">ImageFolder</span><span class="p">):</span>
     <span class="s">"""Custom dataset that includes image file paths. Extends
     torchvision.datasets.ImageFolder
     Source: https://gist.github.com/andrewjong/6b02ff237533b3b2c554701fb53d5c4d
@@ -297,19 +300,19 @@
     <span class="c1"># override the __getitem__ method. this is the method that dataloader calls
 </span>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="c1"># this is what ImageFolder normally returns 
-</span>        <span class="n">original_tuple</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ImageFolderWithPaths</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</span>        <span class="n">original_tuple</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ImageFolderWithPaths</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="c1"># the image file path
-</span>        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span>        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># make a new tuple that includes original and the path
 </span>        <span class="n">tuple_with_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_tuple</span> <span class="o">+</span> <span class="p">(</span><span class="n">path</span><span class="p">,))</span>
         <span class="k">return</span> <span class="n">tuple_with_path</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>As you can see from the above code, just by adding a couple of lines to the <code class="highlighter-rouge">__getitem__</code> method, we are able to return the file names along with the image tensor and a label if necessary.</p>
+<p>As you can see from the above code, just by adding a couple of lines to the <code class="language-plaintext highlighter-rouge">__getitem__</code> method, we are able to return the file names along with the image tensor and a label if necessary.</p>
 
 <h2 id="preprocessing-the-input-data">Preprocessing the input data</h2>
 
-<p>We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to <code class="highlighter-rouge">(224 x 224)</code> as that is the input size required by the ResNet. This can be achieved using a simple <code class="highlighter-rouge">torchvision.transforms.Resize()</code>. We also have to normalize our input tensor with the same parameters as used to train the network on imagenet. This is what our preprocessing looks like: <br /></p>
+<p>We do not require a lot of preprocessing for this sample dataset. Here we will just resize the input images to <code class="language-plaintext highlighter-rouge">(224 x 224)</code> as that is the input size required by the ResNet. This can be achieved using a simple <code class="language-plaintext highlighter-rouge">torchvision.transforms.Resize()</code>. We also have to normalize our input tensor with the same parameters as used to train the network on imagenet. This is what our preprocessing looks like: <br /></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
@@ -319,25 +322,25 @@
 7
 8
 9
-</pre></td><td class="rouge-code"><pre><span class="n">transforms_</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+</pre></td><td class="rouge-code"><pre><span class="n">transforms_</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="p">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">transforms</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="p">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
                         <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
 <span class="p">])</span>
 
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageFolderWithPaths</span><span class="p">(</span><span class="s">'Jewellery'</span><span class="p">,</span> <span class="n">transforms_</span><span class="p">)</span> <span class="c1"># our custom dataset
-</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <h2 id="downloading-the-model">Downloading the model</h2>
 
-<p>We will be using the pretrained ResNet50 from <code class="highlighter-rouge">torchvision.models</code>. You can try using the same logic on multiple different CNN architectures but we will be using ResNet50 for this blog.</p>
+<p>We will be using the pretrained ResNet50 from <code class="language-plaintext highlighter-rouge">torchvision.models</code>. You can try using the same logic on multiple different CNN architectures but we will be using ResNet50 for this blog.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre><span class="n">DEVICE</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td><td class="rouge-code"><pre><span class="n">DEVICE</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>ResNet is by default used for classification. We don’t want the output from the output layer of the ResNet. We will consider our feature vector to be the output of the last pooling layer. To extract the output from this pooling layer, we will use a small function:</p>
@@ -351,18 +354,18 @@
 7
 </pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">pooling_output</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">model</span>
-    <span class="k">for</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">_modules</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">_modules</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">layer_name</span> <span class="o">==</span> <span class="s">'avgpool'</span><span class="p">:</span>
             <span class="k">break</span>
     <span class="k">return</span> <span class="n">x</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>Here <code class="highlighter-rouge">avgpool</code> is the name of the last pooling layer in the structure of our model.</p>
+<p>Here <code class="language-plaintext highlighter-rouge">avgpool</code> is the name of the last pooling layer in the structure of our model.</p>
 
 <h2 id="creating-feature-vectors">Creating feature vectors</h2>
 
-<p>We now have everything we require to create our feature vectors. This is a very straightforward process. Make sure you put the model in <code class="highlighter-rouge">eval()</code> mode before running this!</p>
+<p>We now have everything we require to create our feature vectors. This is a very straightforward process. Make sure you put the model in <code class="language-plaintext highlighter-rouge">eval()</code> mode before running this!</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -378,17 +381,17 @@
 </pre></td><td class="rouge-code"><pre><span class="c1"># iterate over data
 </span><span class="n">image_paths</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">descriptors</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">paths</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
-        <span class="n">descriptors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-        <span class="n">image_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">inputs</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+        <span class="n">descriptors</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="n">image_paths</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+        <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">empty_cache</span><span class="p">()</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>Once this code finishes execution, congratulations! You have now built feature vectors from your dataset. But how do you find similar images from these feature vectors? This is where <code class="highlighter-rouge">faiss</code> comes in. The description of faiss from its github is “A library for efficient similarity search and clustering of dense vectors”. This is a library created by Facebook which is super fast at similarity search, which is exactly what we want.</p>
+<p>Once this code finishes execution, congratulations! You have now built feature vectors from your dataset. But how do you find similar images from these feature vectors? This is where <code class="language-plaintext highlighter-rouge">faiss</code> comes in. The description of faiss from its github is “A library for efficient similarity search and clustering of dense vectors”. This is a library created by Facebook which is super fast at similarity search, which is exactly what we want.</p>
 
 <h2 id="installing-faiss">Installing faiss</h2>
 
@@ -419,9 +422,9 @@ pip <span class="nb">install </span>mkl
 <span class="kn">import</span> <span class="nn">faiss</span>
 
 
-<span class="n">index</span> <span class="o">=</span> <span class="n">faiss</span><span class="o">.</span><span class="n">IndexFlatL2</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
-<span class="n">descriptors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
-<span class="n">index</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">faiss</span><span class="p">.</span><span class="n">IndexFlatL2</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+<span class="n">descriptors</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
+<span class="n">index</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">descriptors</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <h2 id="calculating-the-feature-vector-of-a-query-image-and-searching-using-faiss">Calculating the feature vector of a query image and searching using faiss</h2>
@@ -435,13 +438,13 @@ pip <span class="nb">install </span>mkl
 7
 8
 </pre></td><td class="rouge-code"><pre><span class="n">query_image</span> <span class="o">=</span> <span class="s">'Jewellery/bracelet/bracelet_048.jpg'</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">query_image</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">query_image</span><span class="p">)</span>
 
 <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">transforms_</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="n">query_descriptors</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-    <span class="n">distance</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query_descriptors</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2048</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">query_descriptors</span> <span class="o">=</span> <span class="n">pooling_output</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)).</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">distance</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">index</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">query_descriptors</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2048</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>Using the above piece of code, I got the following results:<br /></p>
@@ -623,7 +626,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12 text-center text-lg-center">
-                <!-- Copyright © 2020 Aniket Sanap  -->
+                <!-- Copyright © 2021 Aniket Sanap  -->
                 <!-- Made with jekyll -->
             </div>
             <!-- <div class="col-md-6 col-sm-6 text-center text-lg-right">    

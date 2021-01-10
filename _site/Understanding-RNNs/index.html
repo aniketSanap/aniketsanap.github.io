@@ -8,9 +8,9 @@
 
 <title>Understanding RNNs | Aniket Sanap</title>
 
-<!-- Begin Jekyll SEO tag v2.5.0 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Understanding RNNs | Aniket Sanap</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Understanding RNNs" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Understand the working of this powerful deep learning architecture" />
@@ -20,9 +20,12 @@
 <meta property="og:site_name" content="Aniket Sanap" />
 <meta property="og:image" content="http://localhost:4000/assets/images/posts/RNNs/RNN.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-02-18T00:00:00+05:30" />
+<meta property="article:published_time" content="2020-02-18T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/images/posts/RNNs/RNN.png" />
+<meta property="twitter:title" content="Understanding RNNs" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Understanding-RNNs/"},"@type":"BlogPosting","description":"Understand the working of this powerful deep learning architecture","url":"http://localhost:4000/Understanding-RNNs/","headline":"Understanding RNNs","dateModified":"2020-02-18T00:00:00+05:30","datePublished":"2020-02-18T00:00:00+05:30","image":"http://localhost:4000/assets/images/posts/RNNs/RNN.png","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"}},"@context":"http://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Understanding-RNNs/"},"description":"Understand the working of this powerful deep learning architecture","url":"http://localhost:4000/Understanding-RNNs/","@type":"BlogPosting","image":"http://localhost:4000/assets/images/posts/RNNs/RNN.png","headline":"Understanding RNNs","dateModified":"2020-02-18T00:00:00-05:00","datePublished":"2020-02-18T00:00:00-05:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"}},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -264,29 +267,29 @@ These architectures don’t store any information about the previous inputs give
 
 <p>Unrolling an RNN is simply visualizing how it processes the sequence element by element. In reality, the RNN consists of just one cell processing the input in a loop. This property of an RNN allows it to process variable length inputs. RNNs are just a <strong>refactored, fully-connected neural network.</strong></p>
 
-<p>The working of an RNN (at timestep <script type="math/tex">t</script>) is as follows:
-An RNN consists of 3 weight matrices: <script type="math/tex">W_x</script>, <script type="math/tex">W_h</script>, <script type="math/tex">W_y</script>.</p>
+<p>The working of an RNN (at timestep \(t\)) is as follows:
+An RNN consists of 3 weight matrices: \(W_x\), \(W_h\), \(W_y\).</p>
 <ul>
-  <li><script type="math/tex">W_x</script> is the weight matrix for the input (x).</li>
-  <li><script type="math/tex">W_h</script> is the weight matrix for the hidden state.</li>
-  <li><script type="math/tex">W_y</script> is the weight matrix for the output.</li>
+  <li>\(W_x\) is the weight matrix for the input (x).</li>
+  <li>\(W_h\) is the weight matrix for the hidden state.</li>
+  <li>\(W_y\) is the weight matrix for the output.</li>
 </ul>
 
 <p>The hidden state is given by:<br />
-<script type="math/tex">H_t = \sigma(W_x * X_t + W_h * H_{t-1})</script></p>
+\(H_t = \sigma(W_x * X_t + W_h * H_{t-1})\)</p>
 <ul>
-  <li><script type="math/tex">H_t</script> is the hidden state at timestep <script type="math/tex">t</script>.</li>
-  <li><script type="math/tex">\sigma</script> is the activation function (generally sigmoid or tanh).</li>
-  <li><script type="math/tex">X_t</script> is the input at the current timestep.</li>
+  <li>\(H_t\) is the hidden state at timestep \(t\).</li>
+  <li>\(\sigma\) is the activation function (generally sigmoid or tanh).</li>
+  <li>\(X_t\) is the input at the current timestep.</li>
 </ul>
 
 <p>The output of the RNN is given by:<br />
-<script type="math/tex">y = \sigma_y(W_y * H_t)</script></p>
+\(y = \sigma_y(W_y * H_t)\)</p>
 
 <p>Due to the sequential nature of natural language, RNNs are commonly used in Natural Language Processing. 
 Let us try to better understand the working of RNNs using an example.</p>
 
-<p>In this example we are going to build a model to classify names into two countries of origin -&gt; Italy and Germany. Our dataset consists of two files <code class="highlighter-rouge">Italian.txt</code> and <code class="highlighter-rouge">German.txt</code>. Both of these files contain a single name on each line. 
+<p>In this example we are going to build a model to classify names into two countries of origin -&gt; Italy and Germany. Our dataset consists of two files <code class="language-plaintext highlighter-rouge">Italian.txt</code> and <code class="language-plaintext highlighter-rouge">German.txt</code>. Both of these files contain a single name on each line. 
 The data can be downloaded by:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>wget https://download.pytorch.org/tutorial/data.zip
@@ -299,7 +302,7 @@ name_3
 </code></pre>
 <h2 id="cleaning-the-data">Cleaning the Data</h2>
 
-<p>We start off by importing all the modules we will be using for this project. The only module you will need to install is of course <code class="highlighter-rouge">pytorch</code>.</p>
+<p>We start off by importing all the modules we will be using for this project. The only module you will need to install is of course <code class="language-plaintext highlighter-rouge">pytorch</code>.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -327,12 +330,12 @@ name_3
 6
 7
 </pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Projects/NameClassifier/data/names/German.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">german_f</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Projects/NameClassifier/data/names/Italian.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">italian_f</span><span class="p">:</span>
-    <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'German names:</span><span class="se">\n</span><span class="s">{german_names[:30]}'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'German names:</span><span class="se">\n</span><span class="si">{</span><span class="n">german_names</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
 <span class="k">print</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Italian names:</span><span class="se">\n</span><span class="s">{italian_names[:33]}'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Italian names:</span><span class="se">\n</span><span class="si">{</span><span class="n">italian_names</span><span class="p">[:</span><span class="mi">33</span><span class="p">]</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
 <pre><code class="language-plain">German names:
@@ -355,20 +358,20 @@ Abatantuono
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre></td><td class="rouge-code"><pre><span class="n">unique_characters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ascii_letters</span><span class="p">))</span>
+</pre></td><td class="rouge-code"><pre><span class="n">unique_characters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">)).</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ascii_letters</span><span class="p">))</span>
 <span class="n">unique_characters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_characters</span><span class="p">)</span>
-<span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_characters</span><span class="p">))</span>
+<span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_characters</span><span class="p">))</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
 <pre><code class="language-plain">" 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzßàäèéìòóöùü"
 </code></pre>
-<p>Doing this ensures that our vocabulary will contain as many used characters as possible. You can probably get away with just using <code class="highlighter-rouge">ascii_letters</code> to form your vocabulary. This is what our list of names looks like:</p>
+<p>Doing this ensures that our vocabulary will contain as many used characters as possible. You can probably get away with just using <code class="language-plaintext highlighter-rouge">ascii_letters</code> to form your vocabulary. This is what our list of names looks like:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
-</pre></td><td class="rouge-code"><pre><span class="n">german_names</span> <span class="o">=</span> <span class="n">german_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
-<span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</pre></td><td class="rouge-code"><pre><span class="n">german_names</span> <span class="o">=</span> <span class="n">german_names</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_names</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">german_names</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
 <span class="k">print</span><span class="p">(</span><span class="n">italian_names</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
@@ -382,7 +385,7 @@ Abatantuono
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre><span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
+</pre></td><td class="rouge-code"><pre><span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">).</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
 <span class="n">common_names</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
@@ -398,10 +401,10 @@ Abatantuono
 5
 6
 </pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">common_name</span> <span class="ow">in</span> <span class="n">common_names</span><span class="p">:</span>
-    <span class="n">german_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
-    <span class="n">italian_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
+    <span class="n">german_names</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
+    <span class="n">italian_names</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
     
-<span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
+<span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">).</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
 <span class="n">common_names</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
@@ -410,7 +413,7 @@ Abatantuono
 
 <h3 id="creating-our-data">Creating our data</h3>
 
-<p>We will create a list of all our names. This will be the input passed to our model. Along with this we will also need labels. We will have a label of <code class="highlighter-rouge">0</code> for german names and a label of <code class="highlighter-rouge">1</code> for italian names.</p>
+<p>We will create a list of all our names. This will be the input passed to our model. Along with this we will also need labels. We will have a label of <code class="language-plaintext highlighter-rouge">0</code> for german names and a label of <code class="language-plaintext highlighter-rouge">1</code> for italian names.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -470,22 +473,22 @@ Abatantuono
 </pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">one_hot_encoder</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">stoi</span>
     <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stoi</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Size of stoi: {size}'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Size of stoi: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="c1"># To save output
 </span>    <span class="n">encoded</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Iterating through name
 </span>    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
         <span class="c1"># Setting index of character to 1
 </span>        <span class="n">temp</span><span class="p">[</span><span class="n">stoi</span><span class="p">[</span><span class="n">char</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="n">encoded</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
         
     <span class="c1"># Filling the rest of the sequence with zeros
 </span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)):</span>
-        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">encoded</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
 
 <span class="n">one_hot_encoder</span><span class="p">(</span><span class="s">'Aniket'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
@@ -503,7 +506,7 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 
 <h3 id="creating-our-dataset-object">Creating our dataset object</h3>
 
-<p>Now we have done a lot of preprocessing! Let us combine all of this in our dataset class. We will set the sequence length to <script type="math/tex">18</script> as that is the length of the longest name in our dataset.</p>
+<p>Now we have done a lot of preprocessing! Let us combine all of this in our dataset class. We will set the sequence length to \(18\) as that is the length of the longest name in our dataset.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -568,65 +571,65 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 61
 </pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">NameDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">german_fname</span><span class="o">=</span><span class="s">'Projects/NameClassifier/data/names/German.txt'</span><span class="p">,</span> <span class="n">italian_fname</span><span class="o">=</span><span class="s">'Projects/NameClassifier/data/names/Italian.txt'</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
         <span class="c1"># Reading from files
 </span>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">german_fname</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">german_f</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">italian_fname</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">italian_f</span><span class="p">:</span>
-            <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
         
         <span class="c1"># Finding unique characters
-</span>        <span class="n">unique_characters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">((</span><span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ascii_letters</span><span class="p">)))</span>
-        <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
-        <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</span>        <span class="n">unique_characters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">((</span><span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">)).</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ascii_letters</span><span class="p">)))</span>
+        <span class="n">german_names</span> <span class="o">=</span> <span class="n">german_names</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+        <span class="n">italian_names</span> <span class="o">=</span> <span class="n">italian_names</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
         
         <span class="c1"># Removing common names
-</span>        <span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
+</span>        <span class="n">common_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">german_names</span><span class="p">).</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)))</span>
         <span class="k">for</span> <span class="n">common_name</span> <span class="ow">in</span> <span class="n">common_names</span><span class="p">:</span>
-            <span class="n">german_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
-            <span class="n">italian_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
+            <span class="n">german_names</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
+            <span class="n">italian_names</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">common_name</span><span class="p">)</span>
         <span class="n">german_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">italian_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Setting names and labels
-</span>        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">german_label</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">german_names</span><span class="p">)</span> <span class="o">+</span> <span class="n">italian_label</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)</span>
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">german_names</span> <span class="o">+</span> <span class="n">italian_names</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">german_label</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">german_names</span><span class="p">)</span> <span class="o">+</span> <span class="n">italian_label</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">italian_names</span><span class="p">)</span>
         
         <span class="c1"># Mapping from chars to int
-</span>        <span class="bp">self</span><span class="o">.</span><span class="n">stoi</span> <span class="o">=</span>  <span class="p">{</span><span class="n">char</span><span class="p">:</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_characters</span><span class="p">))}</span>
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">stoi</span> <span class="o">=</span>  <span class="p">{</span><span class="n">char</span><span class="p">:</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unique_characters</span><span class="p">))}</span>
         
         <span class="c1"># Size of longest word is 18
-</span>        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">18</span>
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">18</span>
         
         <span class="c1"># One hot encoded names
-</span>        <span class="bp">self</span><span class="o">.</span><span class="n">encoded_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_dataset</span><span class="p">()</span>
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">encoded_names</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">encode_dataset</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">one_hot_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stoi</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">stoi</span><span class="p">)</span>
 
         <span class="n">encoded</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-            <span class="n">temp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">char</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">temp</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">char</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">encoded</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)):</span>
-            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)):</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">encoded</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">encode_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">encoded_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
-            <span class="n">encoded_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">names</span><span class="p">:</span>
+            <span class="n">encoded_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">encoded_list</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">labels</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoded_names</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">encoded_names</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="p">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]])</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>Let us see what our output looks like:</p>
@@ -648,7 +651,7 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 </pre></td><td class="rouge-code"><pre><span class="c1"># Shape of input tensor (one word)
-</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">shape</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
 <pre><code class="language-plain">torch.Size([18, 65])
@@ -661,7 +664,7 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 6
 7
 8
-</pre></td><td class="rouge-code"><pre><span class="n">device</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
+</pre></td><td class="rouge-code"><pre><span class="n">device</span> <span class="o">=</span> <span class="s">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">'cpu'</span>
 <span class="n">split_ratio</span> <span class="o">=</span> <span class="mf">0.8</span>
 <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
 <span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_ratio</span> <span class="o">*</span> <span class="n">data_len</span><span class="p">)</span>
@@ -678,22 +681,22 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 <h3 id="building-an-rnn-using-linear-layers">Building an RNN using linear layers</h3>
 
 <p>Let us revisit the mathematics behind an RNN:
-<script type="math/tex">H_t = \sigma(W_x * X_t + W_h * H_{t-1})</script>
-<script type="math/tex">y = \sigma_y(W_y * H_t)</script></p>
+\(H_t = \sigma(W_x * X_t + W_h * H_{t-1})\)
+\(y = \sigma_y(W_y * H_t)\)</p>
 
-<p>Where <script type="math/tex">H_t</script> is the hidden state at timestep <script type="math/tex">t</script> and <script type="math/tex">y</script> is the output of the RNN. For illustration purposes we will assume the batch size to be <script type="math/tex">1</script>. Let us discuss some of the terminology commonly used while talking about RNNs.</p>
+<p>Where \(H_t\) is the hidden state at timestep \(t\) and \(y\) is the output of the RNN. For illustration purposes we will assume the batch size to be \(1\). Let us discuss some of the terminology commonly used while talking about RNNs.</p>
 
 <h5 id="sequence-length">Sequence length</h5>
 
-<p>Although RNNs can handle inputs of varying sequence lengths, tensor operations require the every sequence of the same size. This is why while RNNs can accept sequences of any length, for parallel processing we will maintain the same sequence length for every input batch. The sequence length for our model is <script type="math/tex">18</script> because that is the length of the longest name in our dataset.</p>
+<p>Although RNNs can handle inputs of varying sequence lengths, tensor operations require the every sequence of the same size. This is why while RNNs can accept sequences of any length, for parallel processing we will maintain the same sequence length for every input batch. The sequence length for our model is \(18\) because that is the length of the longest name in our dataset.</p>
 
 <h5 id="input-size">Input size</h5>
 
-<p>This parameter of our RNN is different from the sequence length. This parameter signifies the size of one element of the sequence. For our example, the input size is <script type="math/tex">65</script> which is the size of our one hot encoded vector.</p>
+<p>This parameter of our RNN is different from the sequence length. This parameter signifies the size of one element of the sequence. For our example, the input size is \(65\) which is the size of our one hot encoded vector.</p>
 
 <hr />
 
-<p>Now let us try building our own RNN with just linear layers. We will use <code class="highlighter-rouge">nn.Linear</code> for  a linear layer. We need a linear layer for <script type="math/tex">W_x, W_h</script> and <script type="math/tex">W_y</script> each. We will also initialize the hidden state with <code class="highlighter-rouge">torch.zeros</code>. We will have a <code class="highlighter-rouge">for</code> loop to iterate through the sequence.</p>
+<p>Now let us try building our own RNN with just linear layers. We will use <code class="language-plaintext highlighter-rouge">nn.Linear</code> for  a linear layer. We need a linear layer for \(W_x, W_h\) and \(W_y\) each. We will also initialize the hidden state with <code class="language-plaintext highlighter-rouge">torch.zeros</code>. We will have a <code class="language-plaintext highlighter-rouge">for</code> loop to iterate through the sequence.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -727,41 +730,41 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 30
 31
 32
-</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">LinearRNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">LinearRNN</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
         <span class="k">global</span> <span class="n">device</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">256</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">18</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="mi">65</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Wx</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Wh</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Wy</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">256</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">18</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="mi">65</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">Wx</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">Wh</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">Wy</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">):</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># input_tensor.shape[1] = sequence length
-</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>     
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>     
             <span class="c1"># input_tensor[:, i] = the ith element in the sequence
-</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wx</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]))</span>     
-            <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wh</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-            <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Wx</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]))</span>     
+            <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Wh</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>        
-        <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wy</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="p">.</span><span class="n">detach</span><span class="p">()</span>        
+        <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Wy</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
     
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>Now let us create our <code class="highlighter-rouge">DataLoader</code> and set some hyperparameters before training the model.</p>
+<p>Now let us create our <code class="language-plaintext highlighter-rouge">DataLoader</code> and set some hyperparameters before training the model.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -781,14 +784,14 @@ tensor([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </pre></td><td class="rouge-code"><pre><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">linear_train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
 <span class="n">linear_test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRNN</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRNN</span><span class="p">().</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 <span class="n">lr</span> <span class="o">=</span> <span class="mf">5e-6</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">optim</span><span class="p">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">max_accuracy</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">MODEL_PATH</span> <span class="o">=</span> <span class="s">''</span>
-<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">MODEL_PATH</span><span class="p">):</span>
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">MODEL_PATH</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Existing model found!'</span><span class="p">)</span>
     <span class="n">load_weights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">MODEL_PATH</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
@@ -847,41 +850,41 @@ LinearRNN(
 36
 37
 </pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">()</span>
     <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Epoch: {epoch}'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">input_batch</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">linear_train_loader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">model</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nb">long</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
+        <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">item</span><span class="p">()</span>
 
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Accuracy: {correct/total * 100}</span><span class="se">\n</span><span class="s">Loss: {epoch_loss/total}'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Accuracy: </span><span class="si">{</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span> <span class="o">*</span> <span class="mi">100</span><span class="si">}</span><span class="se">\n</span><span class="s">Loss: </span><span class="si">{</span><span class="n">epoch_loss</span><span class="o">/</span><span class="n">total</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">test_epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">input_batch</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">linear_test_loader</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
-                <span class="n">test_epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-                <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nb">long</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
+                <span class="n">test_epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">item</span><span class="p">()</span>
 
         <span class="n">test_accuracy</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'''### TESTING ###
-        Accuracy: {test_accuracy}
-        Loss: {round(test_epoch_loss/total, 4)}'''</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'''### TESTING ###
+        Accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">}</span><span class="s">
+        Loss: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">test_epoch_loss</span><span class="o">/</span><span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s">'''</span><span class="p">)</span>
 
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
@@ -914,7 +917,7 @@ Loss: 0.3607256871925981
         Loss: 0.394
 </code></pre>
 
-<p>As you can see, with just 30 epochs of training we are able to achieve testing accuracy of more than <b>92%</b>! The RNN implementation we saw above is just to provide insight into the working of RNNs and I don’t recommend anyone to actually build their own RNNs while working on their projects. We will now use the <code class="highlighter-rouge">torch.nn.RNN</code> module on the same problem. This is a much faster implementation which supports parallel processing.</p>
+<p>As you can see, with just 30 epochs of training we are able to achieve testing accuracy of more than <b>92%</b>! The RNN implementation we saw above is just to provide insight into the working of RNNs and I don’t recommend anyone to actually build their own RNNs while working on their projects. We will now use the <code class="language-plaintext highlighter-rouge">torch.nn.RNN</code> module on the same problem. This is a much faster implementation which supports parallel processing.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -947,40 +950,40 @@ Loss: 0.3607256871925981
 29
 30
 31
-</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">NameClassifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</pre></td><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">NameClassifier</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="mi">65</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
         <span class="n">dropout_prob</span> <span class="o">=</span> <span class="mf">0.4</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="n">input_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="n">max_len</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">RNN</span><span class="p">(</span>
-            <span class="n">input_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_size</span><span class="p">,</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> 
-            <span class="n">num_layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span> 
+        <span class="bp">self</span><span class="p">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="n">input_size</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span> <span class="o">=</span> <span class="n">max_len</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">RNN</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">,</span> 
+            <span class="n">num_layers</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">num_layers</span><span class="p">,</span> 
             <span class="n">batch_first</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
             <span class="n">dropout</span><span class="o">=</span><span class="n">dropout_prob</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dropout_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">linear_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">dropout_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">linear_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         
         
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">,</span> <span class="n">hidden</span><span class="p">):</span>
-        <span class="n">rnn_output</span><span class="p">,</span> <span class="n">new_hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span>
-        <span class="n">rnn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_layer</span><span class="p">(</span><span class="n">rnn_output</span><span class="p">)</span>
-        <span class="n">linear_output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_layer</span><span class="p">(</span><span class="n">rnn_output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_length</span><span class="p">)))</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">linear_output</span><span class="p">))</span>
-        <span class="n">new_hidden</span> <span class="o">=</span> <span class="n">new_hidden</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="n">rnn_output</span><span class="p">,</span> <span class="n">new_hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">rnn</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span>
+        <span class="n">rnn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">dropout_layer</span><span class="p">(</span><span class="n">rnn_output</span><span class="p">)</span>
+        <span class="n">linear_output</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">linear_layer</span><span class="p">(</span><span class="n">rnn_output</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">sequence_length</span><span class="p">)))</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">linear_output</span><span class="p">))</span>
+        <span class="n">new_hidden</span> <span class="o">=</span> <span class="n">new_hidden</span><span class="p">.</span><span class="n">detach</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">new_hidden</span>
         
         
     <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">num_layers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">hidden_size</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>The only difference between this model and the one which we built is the addition of <code class="highlighter-rouge">nn.Dropout</code> which helps the model to generalize better and prevents overfitting. For this particular problem this addition did not add much of a difference to the results but it is good practice to have some sort of regularization and it does not harm our results in any way. Setting hyperparameters and training:</p>
+<p>The only difference between this model and the one which we built is the addition of <code class="language-plaintext highlighter-rouge">nn.Dropout</code> which helps the model to generalize better and prevents overfitting. For this particular problem this addition did not add much of a difference to the results but it is good practice to have some sort of regularization and it does not harm our results in any way. Setting hyperparameters and training:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -988,15 +991,15 @@ Loss: 0.3607256871925981
 4
 5
 6
-</pre></td><td class="rouge-code"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">NameClassifier</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+</pre></td><td class="rouge-code"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">NameClassifier</span><span class="p">().</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 <span class="n">lr</span> <span class="o">=</span> <span class="mf">5e-6</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">optim</span><span class="p">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">max_accuracy</span> <span class="o">=</span> <span class="mf">0.0</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>This is what the <code class="highlighter-rouge">nn.RNN</code> model looks like.</p>
+<p>This is what the <code class="language-plaintext highlighter-rouge">nn.RNN</code> model looks like.</p>
 
 <p>Output:</p>
 <pre><code class="language-plain">NameClassifier(
@@ -1060,43 +1063,43 @@ Loss: 0.3607256871925981
 42
 43
 </pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">()</span>
     <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Epoch: {epoch}'</span><span class="p">)</span>
+    <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">input_batch</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>    
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">model</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>    
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nb">long</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
+        <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">item</span><span class="p">()</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Accuracy: {correct/total * 100}</span><span class="se">\n</span><span class="s">Loss: {epoch_loss/total}'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Accuracy: </span><span class="si">{</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span> <span class="o">*</span> <span class="mi">100</span><span class="si">}</span><span class="se">\n</span><span class="s">Loss: </span><span class="si">{</span><span class="n">epoch_loss</span><span class="o">/</span><span class="n">total</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">test_epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
-        <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">input_batch</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
-                <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="nb">long</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
-                <span class="n">test_epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-                <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_batch</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nb">long</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,))</span>
+                <span class="n">test_epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">correct</span> <span class="o">+=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)).</span><span class="n">item</span><span class="p">()</span>
 
         <span class="n">test_accuracy</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'''### TESTING ###
-        Accuracy: {test_accuracy}
-        Loss: {round(test_epoch_loss/total, 4)}'''</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'''### TESTING ###
+        Accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">}</span><span class="s">
+        Loss: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">test_epoch_loss</span><span class="o">/</span><span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s">'''</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">max_accuracy</span> <span class="o">&lt;</span> <span class="n">test_accuracy</span><span class="p">:</span>
             <span class="n">max_accuracy</span> <span class="o">=</span> <span class="n">test_accuracy</span>
             <span class="n">save_weights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">MODEL_PATH</span><span class="p">)</span>
@@ -1148,15 +1151,15 @@ Best model found!
 7
 8
 9
-</pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
-    <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="s">'Tribbiani'</span><span class="p">)</span>
-    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
-    <span class="n">class_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="s">'Tribbiani'</span><span class="p">)</span>
+    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">hidden</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="n">class_</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'German'</span> <span class="k">if</span> <span class="n">class_</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s">'Italian'</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Confidence: {output[0][0][class_]}'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Confidence: </span><span class="si">{</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">class_</span><span class="p">]</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 <p>Output:</p>
 
@@ -1186,16 +1189,16 @@ Q. The author of these books <strong>__</strong>_____ coming to town.<br /></p>
 
 <p><img src="/assets/images/posts/RNNs/GRU.png" /></p>
 
-<p>Here at each timestep <script type="math/tex">t</script>, we have the input <script type="math/tex">x^t</script> and the hidden state <script type="math/tex">h^t</script>. The GRU makes use of 2 gates:</p>
+<p>Here at each timestep \(t\), we have the input \(x^t\) and the hidden state \(h^t\). The GRU makes use of 2 gates:</p>
 <ol>
   <li>
     <p>The update gate:<br />
-<script type="math/tex">\large u^{(t)} = \sigma(W_u * h^{(t-1)} + U_u * x^{(t)} + b_u)</script><br />
+\(\large u^{(t)} = \sigma(W_u * h^{(t-1)} + U_u * x^{(t)} + b_u)\)<br />
 Controls which parts of the hidden state are updated and which are preserved.</p>
   </li>
   <li>
     <p>The reset gate:<br />
-<script type="math/tex">\large r^{(t)} = \sigma(W_r * h^{(t-1)} + U_r * x^{(t)} + b_r)</script><br />
+\(\large r^{(t)} = \sigma(W_r * h^{(t-1)} + U_r * x^{(t)} + b_r)\)<br />
 Controls which parts of the previous hidden state are used to calculate new content.</p>
   </li>
 </ol>
@@ -1203,19 +1206,19 @@ Controls which parts of the previous hidden state are used to calculate new cont
 <p>These gates can be thought of as small Neural Networks which are used to calculate and extract relevant features and information from the input.</p>
 
 <p>The reset gate is directly used to calculate the new hidden state content:<br />
-<script type="math/tex">\large \tilde{h} = tanh\Big(W_h * (r^{(t)} \bullet h^{(t-1)}) + U_h * x^{(t)} +b_h\Big)</script></p>
+\(\large \tilde{h} = tanh\Big(W_h * (r^{(t)} \bullet h^{(t-1)}) + U_h * x^{(t)} +b_h\Big)\)</p>
 
 <p>The new hidden state is calculated using the update gate. It simulatneously keeps what is kept from the previous hidden state and what is updated to the new hidden state.</p>
 
-<script type="math/tex; mode=display">\large h^{(t)} = (1 - u^{(t)}) \bullet h^{(t-1)} + u^{(t)} \bullet \tilde{h}^{(t)}</script>
+\[\large h^{(t)} = (1 - u^{(t)}) \bullet h^{(t-1)} + u^{(t)} \bullet \tilde{h}^{(t)}\]
 
 <h4 id="how-does-a-gru-solve-the-vanishing-gradient-problem">How does a GRU solve the vanishing gradient problem?</h4>
 
-<p>GRUs make it easier to retain information long term. This can be done through the update gate. If the update gate is set to <script type="math/tex">0</script>, the value of the new hidden state will become:<br />
-<script type="math/tex">\large h^{(t)} = (1 - u^{(t)}) \bullet h^{(t-1)} + u^{(t)} \bullet \tilde{h}^{(t)}</script><br />
-But <script type="math/tex">u^{(t)} = 0</script><br />
+<p>GRUs make it easier to retain information long term. This can be done through the update gate. If the update gate is set to \(0\), the value of the new hidden state will become:<br />
+\(\large h^{(t)} = (1 - u^{(t)}) \bullet h^{(t-1)} + u^{(t)} \bullet \tilde{h}^{(t)}\)<br />
+But \(u^{(t)} = 0\)<br />
 Hence, <br />
-<script type="math/tex">\large h^{(t)} = h^{(t-1)}</script></p>
+\(\large h^{(t)} = h^{(t-1)}\)</p>
 
 <p>This means that the hidden state will never change. Hence from this example we can understand how the GRU will be able to capture long term or short term dependencies as it suites the problem.</p>
 
@@ -1228,7 +1231,7 @@ Hence, <br />
 <ol>
   <li>
     <p>Forget gate<br />
-In this gate the input and <script type="math/tex">h_{t-1}</script> is passed through a sigmoid function. This squishes the inputs between <script type="math/tex">0</script> and <script type="math/tex">1</script>. The gate will “forget” values closer to <script type="math/tex">0</script> and “remember” values closer to <script type="math/tex">1</script>.</p>
+In this gate the input and \(h_{t-1}\) is passed through a sigmoid function. This squishes the inputs between \(0\) and \(1\). The gate will “forget” values closer to \(0\) and “remember” values closer to \(1\).</p>
   </li>
   <li>
     <p>Input gate<br />
@@ -1240,13 +1243,13 @@ The output gate takes the cell state and the previous hidden state as input and 
   </li>
   <li>
     <p>Cell state<br />
-The new cell state <script type="math/tex">C_t</script> is calculated using the outputs of the forget gate and the input gate.</p>
+The new cell state \(C_t\) is calculated using the outputs of the forget gate and the input gate.</p>
   </li>
 </ol>
 
 <h3 id="code">Code</h3>
 
-<p>Using both LSTMs and GRUs in pytorch is very easy using <code class="highlighter-rouge">nn.LSTM</code> and <code class="highlighter-rouge">nn.GRU</code>. They follow a very similar API to that of <code class="highlighter-rouge">nn.RNN</code> and can provide better results for complex problems without much modification to the rest of the code.</p>
+<p>Using both LSTMs and GRUs in pytorch is very easy using <code class="language-plaintext highlighter-rouge">nn.LSTM</code> and <code class="language-plaintext highlighter-rouge">nn.GRU</code>. They follow a very similar API to that of <code class="language-plaintext highlighter-rouge">nn.RNN</code> and can provide better results for complex problems without much modification to the rest of the code.</p>
 
 <h3 id="additional-material">Additional material</h3>
 
@@ -1413,7 +1416,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12 text-center text-lg-center">
-                <!-- Copyright © 2020 Aniket Sanap  -->
+                <!-- Copyright © 2021 Aniket Sanap  -->
                 <!-- Made with jekyll -->
             </div>
             <!-- <div class="col-md-6 col-sm-6 text-center text-lg-right">    

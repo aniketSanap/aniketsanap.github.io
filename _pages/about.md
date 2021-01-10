@@ -8,7 +8,7 @@ permalink: /about
 <div class="row justify-content-between">
 <div class="col-md-8 pr-5">
 
-<p>Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I worked as a machine learning engineer at <a href='https://aiadventures.in'>AI Adventures</a> till March 2020. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I am currently looking for jobs and internship opportunities in this domain.</p>
+<p>Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I have worked as a machine learning engineer and a data scientist. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I am currently pursuing my MS in CS from Rutgers University at New Brunswick.</p>
 
 <!-- <p class="mb-5"><img class="shadow-lg" src="{{site.baseurl}}/assets/images/mediumish-jekyll-template.png" alt="jekyll template mediumish" /></p>
 <h4>Documentation</h4>
