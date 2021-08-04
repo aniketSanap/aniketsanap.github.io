@@ -8,7 +8,7 @@ permalink: /about
 <div class="row justify-content-between">
 <div class="col-md-8 pr-5">
 
-<p>Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I have worked as a machine learning engineer and a data scientist. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I am currently pursuing my MS in CS from Rutgers University at New Brunswick.</p>
+<p>Welcome to my site! I am a graduate student at Rutgers University at New Brunswick currently pursuing my MS in CS with a focus on machine learning. I am also currently working in the <a href='http://seqam.rutgers.edu/'>SEQAM Lab</a> at Rutgers university under Dr. Vladimir Pavlovic. I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I have previously worked as a machine learning engineer and a data scientist but am currently seeking software development roles. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune.</p>
 
 <!-- <p class="mb-5"><img class="shadow-lg" src="{{site.baseurl}}/assets/images/mediumish-jekyll-template.png" alt="jekyll template mediumish" /></p>
 <h4>Documentation</h4>

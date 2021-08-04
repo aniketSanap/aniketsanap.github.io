@@ -8,7 +8,7 @@ var documents = [{
     "id": 1,
     "url": "http://localhost:4000/about",
     "title": "About me",
-    "body": "Welcome to my site! I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I have worked as a machine learning engineer and a data scientist. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. I am currently pursuing my MS in CS from Rutgers University at New Brunswick. Get in touch!You can contact me on linkedin "
+    "body": "Welcome to my site! I am a graduate student at Rutgers University at New Brunswick currently pursuing my MS in CS with a focus on machine learning. I am also currently working in the SEQAM Lab at Rutgers university under Dr. Vladimir Pavlovic. I'm a machine learning enthusiast with an affinity for research. I enjoy programming and learning new technologies. I have previously worked as a machine learning engineer and a data scientist but am currently seeking software development roles. Before that I completed my Bachelor's of Engineering in Computer Engineering from Maharashtra Institute of Technology, Pune. Get in touch!You can contact me on linkedin "
     }, {
     "id": 2,
     "url": "http://localhost:4000/categories",
